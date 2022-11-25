@@ -3,12 +3,8 @@ import mongoose from "mongoose"
 import { APP_PORT, DB_URL } from './config'
 const mainRouter = require('./routes/index')
 const errorHandlerMiddleWare = require('./middlewares/errorHandler.js')
-
-
 const app = express()
-app.listen(APP_PORT, () => {
-    console.log(`server started at ${APP_PORT}`)
-})
+
 //db
 async function dbConnection() {
     try {
@@ -18,7 +14,12 @@ async function dbConnection() {
         throw err
     }
 }
-dbConnection()
+
+dbConnection().then(()=>{
+    app.listen(APP_PORT, () => {
+        console.log(`server started at ${APP_PORT}`)
+    })
+})
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
